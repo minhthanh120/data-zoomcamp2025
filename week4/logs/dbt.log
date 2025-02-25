@@ -1,0 +1,54 @@
+[0m18:12:29.214889 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000019503C225A0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000019503756E70>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000019503754140>]}
+
+
+============================== 18:12:29.214889 | 81d7093f-ef62-495c-894d-ce3ff888acb7 ==============================
+[0m18:12:29.214889 [info ] [MainThread]: Running with dbt=1.9.2
+[0m18:12:29.214889 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'write_json': 'True', 'log_cache_events': 'False', 'partial_parse': 'True', 'cache_selected_only': 'False', 'warn_error': 'None', 'version_check': 'True', 'profiles_dir': 'C:\\Users\\MinhThanh\\.dbt', 'log_path': 'D:\\DE\\DataTalks\\exam_week04\\logs', 'debug': 'False', 'fail_fast': 'False', 'use_colors': 'True', 'use_experimental_parser': 'False', 'empty': 'False', 'quiet': 'False', 'no_print': 'None', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'introspect': 'True', 'log_format': 'default', 'invocation_command': 'dbt run', 'target_path': 'None', 'static_parser': 'True', 'send_anonymous_usage_stats': 'True'}
+[0m18:12:29.405510 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'project_id', 'label': '81d7093f-ef62-495c-894d-ce3ff888acb7', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000019503DDDA60>]}
+[0m18:12:29.452441 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'adapter_info', 'label': '81d7093f-ef62-495c-894d-ce3ff888acb7', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000019503316CC0>]}
+[0m18:12:29.452441 [info ] [MainThread]: Registered adapter: postgres=1.9.0
+[0m18:12:29.637948 [debug] [MainThread]: checksum: 12b12750b70de726cfd89136b8e24afc3f3e77597a97bff40ab7e5f9b39d5e18, vars: {}, profile: , target: , version: 1.9.2
+[0m18:12:29.637948 [info ] [MainThread]: Unable to do partial parsing because saved manifest not found. Starting full parse.
+[0m18:12:29.637948 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'partial_parser', 'label': '81d7093f-ef62-495c-894d-ce3ff888acb7', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000019504251550>]}
+[0m18:12:31.062601 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'load_project', 'label': '81d7093f-ef62-495c-894d-ce3ff888acb7', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000019505671BB0>]}
+[0m18:12:31.153807 [debug] [MainThread]: Wrote artifact WritableManifest to D:\DE\DataTalks\exam_week04\target\manifest.json
+[0m18:12:31.156806 [debug] [MainThread]: Wrote artifact SemanticManifest to D:\DE\DataTalks\exam_week04\target\semantic_manifest.json
+[0m18:12:31.174707 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'resource_counts', 'label': '81d7093f-ef62-495c-894d-ce3ff888acb7', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000001950579B680>]}
+[0m18:12:31.174707 [info ] [MainThread]: Found 2 models, 4 data tests, 433 macros
+[0m18:12:31.174707 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'runnable_timing', 'label': '81d7093f-ef62-495c-894d-ce3ff888acb7', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000019503E10E60>]}
+[0m18:12:31.190338 [info ] [MainThread]: 
+[0m18:12:31.190338 [info ] [MainThread]: Concurrency: 4 threads (target='dev')
+[0m18:12:31.190338 [info ] [MainThread]: 
+[0m18:12:31.190338 [debug] [MainThread]: Acquiring new postgres connection 'master'
+[0m18:12:31.190338 [debug] [ThreadPool]: Acquiring new postgres connection 'list_testdatabase'
+[0m18:12:31.324054 [debug] [ThreadPool]: Using postgres connection "list_testdatabase"
+[0m18:12:31.324054 [debug] [ThreadPool]: On list_testdatabase: /* {"app": "dbt", "dbt_version": "1.9.2", "profile_name": "exam_week04", "target_name": "dev", "connection_name": "list_testdatabase"} */
+
+    select distinct nspname from pg_namespace
+  
+[0m18:12:31.324054 [debug] [ThreadPool]: Opening a new connection, currently in state init
+[0m18:12:31.339571 [debug] [ThreadPool]: Postgres adapter: Got a retryable error when attempting to open a postgres connection.
+1 attempts remaining. Retrying in 0 seconds.
+Error:
+could not translate host name "localhot:5432" to address: No such host is known. 
+
+[0m18:12:31.339571 [debug] [ThreadPool]: Postgres adapter: Error running SQL: /* {"app": "dbt", "dbt_version": "1.9.2", "profile_name": "exam_week04", "target_name": "dev", "connection_name": "list_testdatabase"} */
+
+    select distinct nspname from pg_namespace
+  
+[0m18:12:31.339571 [debug] [ThreadPool]: Postgres adapter: Rolling back transaction.
+[0m18:12:31.339571 [debug] [ThreadPool]: Postgres adapter: Error running SQL: macro list_schemas
+[0m18:12:31.339571 [debug] [ThreadPool]: Postgres adapter: Rolling back transaction.
+[0m18:12:31.339571 [debug] [ThreadPool]: On list_testdatabase: No close available on handle
+[0m18:12:31.339571 [debug] [MainThread]: Connection 'master' was properly closed.
+[0m18:12:31.339571 [debug] [MainThread]: Connection 'list_testdatabase' was properly closed.
+[0m18:12:31.339571 [info ] [MainThread]: 
+[0m18:12:31.339571 [info ] [MainThread]: Finished running  in 0 hours 0 minutes and 0.15 seconds (0.15s).
+[0m18:12:31.339571 [error] [MainThread]: Encountered an error:
+Database Error
+  could not translate host name "localhot:5432" to address: No such host is known. 
+  
+[0m18:12:31.339571 [debug] [MainThread]: Command `dbt run` failed at 18:12:31.339571 after 2.31 seconds
+[0m18:12:31.339571 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000019503027890>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000019503991CD0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000019505672840>]}
+[0m18:12:31.339571 [debug] [MainThread]: Flushing usage events
+[0m18:12:32.574585 [debug] [MainThread]: An error was encountered while trying to flush usage events
