@@ -1,0 +1,100 @@
+id: financial-transactions-data
+namespace: kaggle
+
+variables:
+  file: "financial_transactions"
+  data: "financial-transactions"
+  table: "public.financial_transactions"
+  staging_table: "public.financial_transactions_staging"
+
+tasks:
+  
+  - id: create_staging_table
+    type: io.kestra.plugin.jdbc.postgresql.Queries
+    sql: |
+      CREATE TABLE IF NOT EXISTS {{render(vars.staging_table)}} (
+      unique_id varchar(36),
+      transaction_id varchar(10),
+      date DATE,
+      amount double precision,
+      customer_id varchar(10),
+      type varchar,
+      description text
+      );
+      CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+
+  - id: create_table
+    type: io.kestra.plugin.jdbc.postgresql.Queries
+    sql: |
+      CREATE TABLE IF NOT EXISTS {{render(vars.table)}} (
+      unique_id varchar(36),
+      transaction_id varchar(10),
+      date DATE,
+      amount double precision,
+      customer_id varchar(10),
+      type varchar,
+      description text
+      );
+
+  - id: truncate_staging_table
+    type: io.kestra.plugin.jdbc.postgresql.Queries
+    sql: |
+      TRUNCATE TABLE {{render(vars.staging_table)}};
+
+  - id: extract
+    type: io.kestra.plugin.scripts.shell.Commands
+    outputFiles:
+      - "*.csv"
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
+    commands:
+    - wget -O financial-transactions-dataset.zip https://www.kaggle.com/api/v1/datasets/download/cankatsrc/financial-transactions-dataset
+    - unzip financial-transactions-dataset.zip
+    #- cat financial_transactions.csv > /app/financial_transactions.csv
+
+  - id: copy_into_staging
+    type: io.kestra.plugin.jdbc.postgresql.CopyIn
+    format: CSV
+    from: "{{ outputs.extract.outputFiles['financial_transactions.csv'] }}"
+    table: "{{render(vars.staging_table)}}"
+    header: true
+    columns: [transaction_id, date, amount,
+      customer_id, type,description]
+
+  - id: add_unique_id
+    type: io.kestra.plugin.jdbc.postgresql.Queries
+    sql: |
+      UPDATE {{render(vars.staging_table)}}
+      SET
+        unique_id = uuid_generate_v4()
+
+  - id: truncate_table
+    type: io.kestra.plugin.jdbc.postgresql.Queries
+    sql: |
+      TRUNCATE TABLE {{render(vars.table)}};
+
+  - id: merge_data
+    type: io.kestra.plugin.jdbc.postgresql.Queries
+    sql: |
+      MERGE INTO {{render(vars.table)}} AS T
+      USING {{render(vars.staging_table)}} as S
+      ON T.unique_id = S.unique_id
+      WHEN NOT MATCHED THEN
+      INSERT (
+        unique_id, transaction_id, date, amount,
+      customer_id, type,description
+      )
+      VALUES(
+        S.unique_id, S.transaction_id, S.date, S.amount,
+      S.customer_id, S.type,S.description
+      );
+  - id: purge_files
+    type: io.kestra.plugin.core.storage.PurgeCurrentExecutionFiles
+    description: This will remove output files. If you'd like to explore Kestra outputs, disable it.
+pluginDefaults:
+  - type: io.kestra.plugin.jdbc.postgresql
+    values:
+      url: jdbc:postgresql://host.docker.internal:5432/warehouse
+      username: root
+      password: root
