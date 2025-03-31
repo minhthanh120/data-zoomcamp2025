@@ -1,0 +1,12 @@
+de_project:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: localhost
+      database: warehouse
+      pass: "root"
+      port: 5432
+      schema: public
+      threads: 4
+      user: root
